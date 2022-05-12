@@ -123,10 +123,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         new_instance = HBNBCommand.classes[args[0]]()
-        storage.save()    
-        print(new_instance.id)
-        args = args.partition(' ')
-        atributes = args[2].split(' ')
+        atributes = args[2].partition(' ') 
         dict = []
         for i in atributes:
             dict.append(i.split('='))
@@ -136,6 +133,7 @@ class HBNBCommand(cmd.Cmd):
             else:
                 new_instance[dict[j][0]] = dict[j][1]
         storage.save()
+        print(new_instance.id)
            
            """create State name="California  last_name="rojas" town="Suba"""
             """BaseModel': BaseModel, 'User': User, 'Place': Place,

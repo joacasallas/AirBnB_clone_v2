@@ -126,15 +126,22 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[args[0]]()
         new_args = args[2].split(" ")
         """print(new_args)"""
-        dict_args = {}
         for i in new_args:
             split_args = i.split("=")
             key = split_args[0]
             value = split_args[1]
             if value[0] == '"' == value[-1]:
                 new_instance.__dict__[key] = value[1:-1].replace('"', "").replace("_", " ")
-            dict_args[key] = value
-        print(dict_args)
+            else:
+                try:
+                    value = int(value)
+                except Exception:
+                    try:
+                        value = float(value)
+                    except Exception:
+                        continue        
+            new_instance.__dict__[key] = value
+
         print(new_instance)
         storage.save()
         print(new_instance.id)

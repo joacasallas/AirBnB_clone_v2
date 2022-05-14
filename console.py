@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -115,35 +115,30 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
+        args = args.partition(" ")
+        """print(args)"""
         if not args:
             print("** class name missing **")
             return
-        args = args.partition()
         if args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
         new_instance = HBNBCommand.classes[args[0]]()
-        storage.save()    
-        print(new_instance.id)
-        args = args.partition(' ')
-        atributes = args[2].split(' ')
-        dict = []
-        for i in atributes:
-            dict.append(i.split('='))
-        for j in range(len(dict)):
-            if dict[j][0] not in storage.all():
-                return
-            else:
-                new_instance[dict[j][0]] = dict[j][1]
+        new_args = args[2].split(" ")
+        """print(new_args)"""
+        dict_args = {}
+        for i in new_args:
+            split_args = i.split("=")
+            key = split_args[0]
+            value = split_args[1]
+            if value[0] == '"' == value[-1]:
+                new_instance.__dict__[key] = value[1:-1].replace('"', "").replace("_", " ")
+            dict_args[key] = value
+        print(dict_args)
+        print(new_instance)
         storage.save()
-           
-           """create State name="California  last_name="rojas" town="Suba"""
-            """BaseModel': BaseModel, 'User': User, 'Place': Place,
-               'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review"""
-    
-        
-        
+        print(new_instance.id)
+        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -291,7 +286,7 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] is '\"':  # check for quoted arg
+            if args and args[0] == '\"':  # check for quoted arg
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -299,10 +294,10 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if not att_name and args[0] is not ' ':
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
-            if args[2] and args[2][0] is '\"':
+            if args[2] and args[2][0] == '\"':
                 att_val = args[2][1:args[2].find('\"', 1)]
 
             # if att_val was not quoted arg

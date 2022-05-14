@@ -129,7 +129,8 @@ class HBNBCommand(cmd.Cmd):
             key = split_args[0]
             value = split_args[1]
             if value[0] == '"' == value[-1]:
-                new_instance.__dict__[key] = value[1:-1].replace('"', "").replace("_", " ")
+                new_instance.__dict__[key] =
+                value[1:-1].replace('"', "").replace("_", " ")
             else:
                 try:
                     value = int(value)
@@ -137,8 +138,8 @@ class HBNBCommand(cmd.Cmd):
                     try:
                         value = float(value)
                     except Exception:
-                        continue        
-                new_instance.__dict__[key] = value
+                        continue
+                    new_instance.__dict__[key] = value
         print(new_instance)
         storage.save()
         print(new_instance.id)
@@ -337,6 +338,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()

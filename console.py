@@ -116,7 +116,6 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, args):
         """ Create an object of any class"""
         args = args.partition(" ")
-        """print(args)"""
         if not args:
             print("** class name missing **")
             return
@@ -125,7 +124,6 @@ class HBNBCommand(cmd.Cmd):
             return
         new_instance = HBNBCommand.classes[args[0]]()
         new_args = args[2].split(" ")
-        """print(new_args)"""
         for i in new_args:
             split_args = i.split("=")
             key = split_args[0]
@@ -141,8 +139,6 @@ class HBNBCommand(cmd.Cmd):
                     except Exception:
                         continue        
             new_instance.__dict__[key] = value
-
-        print(new_instance)
         storage.save()
         print(new_instance.id)
         storage.save()

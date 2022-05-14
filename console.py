@@ -138,7 +138,7 @@ class HBNBCommand(cmd.Cmd):
                         value = float(value)
                     except Exception:
                         continue        
-            new_instance.__dict__[key] = value
+                new_instance.__dict__[key] = value
         storage.save()
         print(new_instance.id)
         storage.save()

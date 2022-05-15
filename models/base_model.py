@@ -9,12 +9,13 @@ import models
 
 Base = declarative_base()
 
+
 class BaseModel:
     """A base class for all hbnb models"""
     id = Column(String(60), primary_key=True, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow(), nullable=False)   
+    created_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
-    
+
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
         if not kwargs:
@@ -26,14 +27,13 @@ class BaseModel:
         else:
             for key, value in kwargs.items():
                 if key == "updated_at":
-                    value = datetime.strptime(kwargs['updated_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
+                    value = datetime.strptime(
+                        kwargs['updated_at'], '%Y-%m-%dT%H:%M:%S.%f')
                 if key == "created_at":
-                    value = datetime.strptime(kwargs['created_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
+                    value = datetime.strptime(
+                        kwargs['created_at'], '%Y-%m-%dT%H:%M:%S.%f')
                 if "__class__" not in key:
                     setattr(self, key, value)
-        
 
     def __str__(self):
         """Returns a string representation of the instance"""
@@ -59,10 +59,7 @@ class BaseModel:
             if key == "_sa_instance_state":
                 del dictionary[key]
         return dictionary
-    
+
     def delete(self):
         """delete the current instance from the storage"""
         models.storage.delete(self)
-        
-        
-    

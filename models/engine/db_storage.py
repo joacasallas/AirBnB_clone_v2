@@ -10,7 +10,7 @@ from models.state import State
 from models.user import User
 
 
-class DBStorage ():
+class DBStorage():
     """Manage DBStorage"""
     __engine = None
     __session = None
@@ -34,6 +34,7 @@ class DBStorage ():
         list_cls = [User, State, City, Amenity, Place, Review]
         if cls is None:
             for i in list_cls:
+                i = eval(i)
                 for object in self.__session.query(i).all():
                     key = object.__class__.__name__ + '.' + object.id
                     dict_cls[key] = object
@@ -64,3 +65,7 @@ class DBStorage ():
             expire_on_commit=False, bind=self.__engine)
         Session = scoped_session(session_factory)
         self.__session = Session()
+
+    def close(self):
+        """ Close the session """
+        self.__session.close()

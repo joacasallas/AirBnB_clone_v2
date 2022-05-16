@@ -124,8 +124,10 @@ class HBNBCommand(cmd.Cmd):
             return
         new_instance = HBNBCommand.classes[args[0]]()
         new_args = args[2].split(" ")
+        print(new_args)
         for i in new_args:
             split_args = i.split("=")
+            print(split_args)
             key = split_args[0]
             value = split_args[1]
             if value[0] == '"' == value[-1]:
@@ -140,6 +142,7 @@ class HBNBCommand(cmd.Cmd):
                     except Exception:
                         continue
                     new_instance.__dict__[key] = value
+        print(new_instance)
         storage.save()
         print(new_instance.id)
         storage.save()

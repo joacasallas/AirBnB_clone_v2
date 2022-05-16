@@ -17,13 +17,12 @@ class BaseModel:
     updated_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
 
     def __init__(self, *args, **kwargs):
-        """Instatntiates a new model"""
+        """Instantiates a new model"""
         if not kwargs:
             from models import storage
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
-            storage.new(self)
         else:
             for key, value in kwargs.items():
                 if key == "updated_at":
@@ -56,9 +55,9 @@ class BaseModel:
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
         for key in dictionary:
-            if key == "_sa_instance_state":
-                del dictionary[key]
-        return dictionary
+            if "_sa_instance_state" in dictionary.keys():
+                del (dictionary["_sa_instance_state"])
+            return dictionary
 
     def delete(self):
         """delete the current instance from the storage"""

@@ -6,6 +6,7 @@ from sqlalchemy import Column, String
 import models
 from models.city import City
 
+
 class State(BaseModel):
     """ State class """
     name = ""
@@ -13,7 +14,8 @@ class State(BaseModel):
     def __init__(self, *args, **kwargs):
         """inherit from base  and Basemodel init"""
         super().__init__(*args, **kwargs)
-        
+
+
 """class State(BaseModel, Base):
     '''State class'''
     __tablename__ = 'states'

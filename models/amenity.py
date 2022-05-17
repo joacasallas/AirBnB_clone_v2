@@ -10,7 +10,8 @@ class Amenity(BaseModel, Base):
     """Class Amenities"""
     __tablename__ = 'amenities'
     name = Column(String(128), nullable=False)
-    place_amenities = relationship('Place', secondary=place_amenity, viewonly=True)
+    place_amenities = relationship('Place',
+                                   secondary=place_amenity, viewonly=True)
 
     def __init__(self, *args, **kwargs):
         """inherit from base  and Basemodel init"""

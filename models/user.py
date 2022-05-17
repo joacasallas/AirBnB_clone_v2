@@ -14,7 +14,7 @@ class User(BaseModel, Base):
     last_name = Column(String(128), nullable=False)
     places = relationship('Place', backref='user')
     reviews = relationship('Review', backref='user')
-    
+
     def __init__(self, *args, **kwargs):
         """inherit from base  and Basemodel init"""
         super().__init__(*args, **kwargs)

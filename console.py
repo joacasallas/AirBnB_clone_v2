@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ Console Module """
 import cmd
+from hashlib import new
 import sys
 from models.base_model import BaseModel
 from models.__init__ import storage
@@ -113,36 +114,44 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
+    def _create_dict_instance(self, line):
+        """convert input in args"""
+        new_dict = {}
+        for item in line:
+            if "=" in item:
+                """create list from value and key"""
+                """if '=' found"""
+                new_arg = item.split("=", 1)
+                key = new_arg[0]
+                value = new_arg[1]
+                if value[0] == '"' == value[-1]:
+                    value = value.replace('"', "").replace("_", " ")
+                else:
+                    try:
+                        value = int(value)
+                    except Exception:
+                        try:
+                            value = float(value)
+                        except Exception:
+                            continue
+                new_dict[key] = value
+        return new_dict
+
     def do_create(self, args):
         """ Create an object of any class"""
-        args = args.partition(" ")
         if not args:
             print("** class name missing **")
             return
+        args = args.split()
         if args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args[0]]()
-        new_args = args[2].split(" ")
-        for i in new_args:
-            split_args = i.split("=")
-            key = split_args[0]
-            value = split_args[1]
-            if value[0] == '"' == value[-1]:
-                new_instance.__dict__[key] = \
-                    value[1:-1].replace('"', "").replace("_", " ")
-            else:
-                try:
-                    value = int(value)
-                except Exception:
-                    try:
-                        value = float(value)
-                    except Exception:
-                        continue
-                    new_instance.__dict__[key] = value
-        storage.save()
+        """create dictionary from args"""
+        new_dict = self._create_dict_instance(args[1:])
+        """ sending args on form of kwargs """
+        new_instance = HBNBCommand.classes[args[0]](**new_dict)
         print(new_instance.id)
-        storage.save()
+        new_instance.save()
 
     def help_create(self):
         """ Help information for the create method """

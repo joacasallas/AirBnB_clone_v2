@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """ Console Module """
 import cmd
-from hashlib import new
 import sys
 from models.base_model import BaseModel
 from models.__init__ import storage
@@ -38,7 +37,6 @@ class HBNBCommand(cmd.Cmd):
 
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
-
         Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
         (Brackets denote optional fields in usage example.)
         """
@@ -114,13 +112,22 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def _create_dict_instance(self, line):
-        """convert input in args"""
+    def do_create(self, args):
+        """ Create an object of any class"""
+        args = args.partition(" ")
+        if not args:
+            print("** class name missing **")
+            return
+        if args[0] not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+        new_instance = HBNBCommand.classes[args[0]]()
         new_dict = {}
-        for item in line:
+        new_args = args[2].split(" ")
+        for item in new_args:
             if "=" in item:
-                """create list from value and key"""
-                """if '=' found"""
+                # creating list from value and key
+                # if "=" found
                 new_arg = item.split("=", 1)
                 key = new_arg[0]
                 value = new_arg[1]
@@ -135,23 +142,10 @@ class HBNBCommand(cmd.Cmd):
                         except Exception:
                             continue
                 new_dict[key] = value
-        return new_dict
-
-    def do_create(self, args):
-        """ Create an object of any class"""
-        if not args:
-            print("** class name missing **")
-            return
-        args = args.split()
-        if args[0] not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-        """create dictionary from args"""
-        new_dict = self._create_dict_instance(args[1:])
-        """ sending args on form of kwargs """
-        new_instance = HBNBCommand.classes[args[0]](**new_dict)
-        print(new_instance.id)
         new_instance.save()
+        storage.save()
+        print(new_instance.id)
+        storage.save()
 
     def help_create(self):
         """ Help information for the create method """

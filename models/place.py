@@ -3,13 +3,15 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
+import models
 
-place_amenity = Table('place_amenity', Base.metadata, Column(
-    'place_id', String(60), ForeignKey('places.id'), primary_key=True, nullable=False), Column(
-        'amenity_id', String(60), ForeignKey('amenities.id'), primary_key=True, nullable=False))
+place_amenity = Table('place_amenity', Base.metadata,
+                      Column('place_id', String(60), ForeignKey('places.id'), primary_key=True, nullable=False),
+                      Column('amenity_id', String(60), ForeignKey('amenities.id'), primary_key=True, nullable=False)
+                      )
 
-
-class Place(BaseModel, Base):
+"""class Place(BaseModel, Base):"""
+class Place(BaseModel):
     """ A place to stay """
     __tablename__ = 'places'
     city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
@@ -26,3 +28,21 @@ class Place(BaseModel, Base):
     reviews = relationship('Review', backref='place')
     amenities = relationship(
         'Amenity', secondary=place_amenity, viewonly=False)
+    
+    def __init__(self, *args, **kwargs):
+        """inherit from base  and Basemodel init"""
+        super().__init__(*args, **kwargs)
+        
+    @property
+    def amenities(self):
+        """ Get Linked Amenities"""
+        amenitylist = []
+        for amenity in list(models.storage.all(models.Amenity).values()):
+            if amenity.id in self.amenity_ids:
+                amenitylist.append(amenity)
+        return amenitylist
+    
+    @amenities.setter
+    def amenities(self, value):
+        if type(value) == models.Amenity:
+            self.amenity_ids.append(value.id)

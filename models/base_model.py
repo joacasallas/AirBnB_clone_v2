@@ -51,16 +51,15 @@ class BaseModel:
         """return a dictionary containing all keys/values of the instance"""
         dictionary = {}
         dictionary.update(self.__dict__)
-
+        dictionary.update(self.__dict__)
+        try:
+            del dictionary['_sa_instance_state']
+        except Exception:
+            pass
         dictionary.update({'__class__':
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
-        # if "_sa_instance_state" in dictionary.keys():
-        try:
-            del dictionary["_sa_instance_state"]
-        except Exception:
-            pass
         return dictionary
 
     def delete(self):

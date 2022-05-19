@@ -3,16 +3,16 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
-from models.place import place_amenity
 
 
 class Amenity(BaseModel, Base):
     """Class Amenities"""
     __tablename__ = 'amenities'
     name = Column(String(128), nullable=False)
-    place_amenities = relationship('Place',
-                                   secondary=place_amenity, viewonly=True)
+    place_amenities = relationship('Place', secondary="place_amenity", viewonly=True)
 
     def __init__(self, *args, **kwargs):
-        """inherit from base  and Basemodel init"""
+        """
+            Init for inherited
+        """
         super().__init__(*args, **kwargs)

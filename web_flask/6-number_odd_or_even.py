@@ -45,7 +45,11 @@ def is_number_odd_or_even(n):
         type = "even"
     else:
         type = "odd"
-    return render_template("6-number_odd_or_even.html", n=n, type=type)
+    context = {
+        "n": n,
+        "type": type
+        }
+    return render_template("6-number_odd_or_even.html", **context)
 
 
 if __name__ == '__main__':

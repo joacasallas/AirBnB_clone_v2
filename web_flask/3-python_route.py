@@ -2,7 +2,6 @@
 """script that starts a Flask web application:"""
 
 
-from cProfile import run
 from flask import Flask
 
 

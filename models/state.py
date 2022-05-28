@@ -16,13 +16,13 @@ class State(BaseModel, Base):
         name = Column(String(128), nullable=False)
         cities = relationship('City', backref='state')
     else:
-        name=""
+        name = ""
 
     def __init__(self, *args, **kwargs):
         '''initialization'''
         super().__init__(*args, **kwargs)
 
-    if models.storage_t != "db":    
+    if models.storage_t != "db":
         @property
         def cities(self):
             '''getter'''

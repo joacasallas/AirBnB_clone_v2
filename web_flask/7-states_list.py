@@ -14,9 +14,6 @@ app = Flask(__name__)
 def states_list():
     """display HTML page with the list of all State objects present"""
     states = storage.all(State).values()
-    list_states = []
-    for key in storage:
-        list_states.append(states[key])
     return render_template("7-states_list.html", states=states)
 
 
